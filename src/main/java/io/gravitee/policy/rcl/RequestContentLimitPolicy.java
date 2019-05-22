@@ -65,6 +65,7 @@ public class RequestContentLimitPolicy {
                 int contentLength = Integer.parseInt(contentLengthHeader);
 
                 if (contentLength > requestContentLimitPolicyConfiguration.getLimit()) {
+                    request.metrics().setErrorKey(REQUEST_CONTENT_LIMIT_TOO_LARGE);
                     policyChain.failWith(
                             PolicyResult.failure(
                                     REQUEST_CONTENT_LIMIT_TOO_LARGE,
@@ -86,6 +87,7 @@ public class RequestContentLimitPolicy {
             // Chunked transfer encoding, the content-length is not specified, just return the policy chain
             policyChain.doNext(request, response);
         } else {
+            request.metrics().setErrorKey(REQUEST_CONTENT_LIMIT_LENGTH_REQUIRED);
             policyChain.failWith(
                     PolicyResult.failure(
                             REQUEST_CONTENT_LIMIT_LENGTH_REQUIRED,
@@ -111,6 +113,7 @@ public class RequestContentLimitPolicy {
                     contentLength += content.length();
 
                     if (contentLength > requestContentLimitPolicyConfiguration.getLimit()) {
+                        request.metrics().setErrorKey(REQUEST_CONTENT_LIMIT_TOO_LARGE);
                         policyChain.streamFailWith(
                                 PolicyResult.failure(
                                         REQUEST_CONTENT_LIMIT_TOO_LARGE,
