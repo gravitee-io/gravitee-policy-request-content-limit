@@ -1,11 +1,11 @@
-= Request Content Limit Policy
+= Request content limit policy
 
 ifdef::env-github[]
 image:https://ci.gravitee.io/buildStatus/icon?job=gravitee-io/gravitee-policy-request-content-limit/master["Build status", link="https://ci.gravitee.io/job/gravitee-io/job/gravitee-policy-request-content-limit/"]
 image:https://badges.gitter.im/Join Chat.svg["Gitter", link="https://gitter.im/gravitee-io/gravitee-io?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 endif::[]
 
-== Scope
+== Phase
 
 |===
 |onRequest |onResponse
@@ -14,28 +14,19 @@ endif::[]
 
 == Description
 
-This policy allows to specify a max limit request content lenght allowed on a request.
+You can use the `request-content-limit` policy to specify a maximum request content length allowed.
 This limit is compared to the content length header of the request.
-
-== Possible response
-
-|===
-|Error |description
-|400|Content-length is not a valid integer !
-|411|The request did not specify the length of its content, which is required by the requested resource.
-|413|The request is larger than the server is willing or able to process.
-|===
 
 == Configuration
 
-You can configure the policy with the following options :
+You can configure the policy with the following options:
 
 |===
 |Property |Required |Description |Type
 
 |limit
 |true
-|The limit of the request content length allowed
+|Maximum length of request content allowed
 |int
 
 |===
@@ -51,7 +42,7 @@ You can configure the policy with the following options :
 
 == Errors
 
-=== Default error
+=== Default errors
 |===
 |Code |Message
 
@@ -66,12 +57,23 @@ You can configure the policy with the following options :
 
 |===
 
-=== Override errors
-If you're looking to override the default response provided by the policy, you can do it
-thanks to the response templates feature. These templates must be define at the API level (see `Response Templates`
-from the `Proxy` menu).
+=== Default response override
 
-Here are the error keys send by this policy:
+You can use the response template feature to override the default responses provided by the policy. These templates must be defined at the API level (see the API Console *Response Templates*
+option in the API *Proxy* menu).
+
+Some possible responses are:
+
+|===
+|Error |description
+|400|Content-length is not a valid integer.
+|411|The request did not specify the length of its content, which is required by the requested resource.
+|413|The request is larger than the server is willing or able to process.
+|===
+
+=== Error keys
+
+The error keys sent by this policy are as follows:
 
 [cols="2*", options="header"]
 |===
