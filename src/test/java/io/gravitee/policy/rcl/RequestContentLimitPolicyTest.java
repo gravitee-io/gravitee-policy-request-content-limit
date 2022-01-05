@@ -15,11 +15,12 @@
  */
 package io.gravitee.policy.rcl;
 
-import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.HttpHeadersValues;
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
+import io.gravitee.gateway.api.http.HttpHeaderNames;
+import io.gravitee.gateway.api.http.HttpHeaders;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.rcl.configuration.RequestContentLimitPolicyConfiguration;
@@ -74,7 +75,7 @@ public class RequestContentLimitPolicyTest {
         RequestContentLimitPolicyConfiguration configuration = new RequestContentLimitPolicyConfiguration();
         RequestContentLimitPolicy policy = new RequestContentLimitPolicy(configuration);
 
-        when(httpHeaders.getFirst(HttpHeaders.CONTENT_LENGTH)).thenReturn("invalid-content-length");
+        when(httpHeaders.get(HttpHeaderNames.CONTENT_LENGTH)).thenReturn("invalid-content-length");
 
         policy.onRequest(request, response, policyChain);
 
@@ -88,11 +89,11 @@ public class RequestContentLimitPolicyTest {
         RequestContentLimitPolicyConfiguration configuration = new RequestContentLimitPolicyConfiguration();
         RequestContentLimitPolicy policy = new RequestContentLimitPolicy(configuration);
 
-        when(httpHeaders.getFirst(HttpHeaders.TRANSFER_ENCODING)).thenReturn(HttpHeadersValues.TRANSFER_ENCODING_CHUNKED);
+        when(httpHeaders.get(HttpHeaderNames.TRANSFER_ENCODING)).thenReturn(HttpHeadersValues.TRANSFER_ENCODING_CHUNKED);
 
         policy.onRequest(request, response, policyChain);
 
-        verify(policyChain, times(1)).doNext(request, response);
+        verify(policyChain, times(  1)).doNext(request, response);
     }
 
     @Test
@@ -101,7 +102,7 @@ public class RequestContentLimitPolicyTest {
         configuration.setLimit(10);
         RequestContentLimitPolicy policy = new RequestContentLimitPolicy(configuration);
 
-        when(httpHeaders.getFirst(HttpHeaders.CONTENT_LENGTH)).thenReturn("20");
+        when(httpHeaders.get(HttpHeaderNames.CONTENT_LENGTH)).thenReturn("20");
 
         policy.onRequest(request, response, policyChain);
 
@@ -116,7 +117,7 @@ public class RequestContentLimitPolicyTest {
         configuration.setLimit(20);
         RequestContentLimitPolicy policy = new RequestContentLimitPolicy(configuration);
 
-        when(httpHeaders.getFirst(HttpHeaders.CONTENT_LENGTH)).thenReturn("10");
+        when(httpHeaders.get(HttpHeaderNames.CONTENT_LENGTH)).thenReturn("10");
 
         policy.onRequest(request, response, policyChain);
 
