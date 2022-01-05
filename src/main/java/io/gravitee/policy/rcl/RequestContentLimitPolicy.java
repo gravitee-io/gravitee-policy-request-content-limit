@@ -57,7 +57,7 @@ public class RequestContentLimitPolicy {
 
     @OnRequest
     public void onRequest(Request request, Response response, PolicyChain policyChain) {
-        String contentLengthHeader = request.headers().getFirst(HttpHeaders.CONTENT_LENGTH);
+        String contentLengthHeader = request.headers().get(HttpHeaders.CONTENT_LENGTH);
 
         LOGGER.debug("Retrieve content-length from request: {}", contentLengthHeader);
         if (contentLengthHeader != null && ! contentLengthHeader.isEmpty()) {
@@ -138,7 +138,7 @@ public class RequestContentLimitPolicy {
     }
 
     private boolean isTransferEncoding(Request request) {
-        String transferEncoding = request.headers().getFirst(HttpHeaders.TRANSFER_ENCODING);
+        String transferEncoding = request.headers().get(HttpHeaders.TRANSFER_ENCODING);
         return (transferEncoding != null && !transferEncoding.isEmpty());
     }
 }
