@@ -41,7 +41,7 @@ public class RequestContentLimitPolicy {
     /**
      * LOGGER
      */
-    private final static Logger LOGGER = LoggerFactory.getLogger(RequestContentLimitPolicy.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestContentLimitPolicy.class);
 
     private static final String REQUEST_CONTENT_LIMIT_TOO_LARGE = "REQUEST_CONTENT_LIMIT_TOO_LARGE";
     private static final String REQUEST_CONTENT_LIMIT_LENGTH_REQUIRED = "REQUEST_CONTENT_LIMIT_LENGTH_REQUIRED";
@@ -60,50 +60,49 @@ public class RequestContentLimitPolicy {
         String contentLengthHeader = request.headers().get(HttpHeaders.CONTENT_LENGTH);
 
         LOGGER.debug("Retrieve content-length from request: {}", contentLengthHeader);
-        if (contentLengthHeader != null && ! contentLengthHeader.isEmpty()) {
+        if (contentLengthHeader != null && !contentLengthHeader.isEmpty()) {
             try {
                 int contentLength = Integer.parseInt(contentLengthHeader);
 
                 if (contentLength > requestContentLimitPolicyConfiguration.getLimit()) {
                     policyChain.failWith(
-                            PolicyResult.failure(
-                                    REQUEST_CONTENT_LIMIT_TOO_LARGE,
-                                    HttpStatusCode.REQUEST_ENTITY_TOO_LARGE_413,
+                        PolicyResult.failure(
+                            REQUEST_CONTENT_LIMIT_TOO_LARGE,
+                            HttpStatusCode.REQUEST_ENTITY_TOO_LARGE_413,
                             "The request is larger than the server is willing or able to process.",
-                                    Maps.<String, Object>builder()
-                                            .put("length", contentLength)
-                                            .put("limit", requestContentLimitPolicyConfiguration.getLimit())
-                                            .build()));
+                            Maps
+                                .<String, Object>builder()
+                                .put("length", contentLength)
+                                .put("limit", requestContentLimitPolicyConfiguration.getLimit())
+                                .build()
+                        )
+                    );
                 } else {
                     policyChain.doNext(request, response);
                 }
             } catch (NumberFormatException nfe) {
-                policyChain.failWith(PolicyResult.failure(
-                        HttpStatusCode.BAD_REQUEST_400,
-                        "Content-length is not a valid integer !"));
+                policyChain.failWith(PolicyResult.failure(HttpStatusCode.BAD_REQUEST_400, "Content-length is not a valid integer !"));
             }
         } else if (isTransferEncoding(request)) {
             // Chunked transfer encoding, the content-length is not specified, just return the policy chain
             policyChain.doNext(request, response);
         } else {
             policyChain.failWith(
-                    PolicyResult.failure(
-                            REQUEST_CONTENT_LIMIT_LENGTH_REQUIRED,
-                            HttpStatusCode.LENGTH_REQUIRED_411,
-                            "The request did not specify the length of its content, which is required by the " +
-                                    "requested resource.",
-                            Maps.<String, Object>builder()
-                                    .put("limit", requestContentLimitPolicyConfiguration.getLimit())
-                                    .build()));
+                PolicyResult.failure(
+                    REQUEST_CONTENT_LIMIT_LENGTH_REQUIRED,
+                    HttpStatusCode.LENGTH_REQUIRED_411,
+                    "The request did not specify the length of its content, which is required by the " + "requested resource.",
+                    Maps.<String, Object>builder().put("limit", requestContentLimitPolicyConfiguration.getLimit()).build()
+                )
+            );
         }
     }
 
     @OnRequestContent
-    public ReadWriteStream onRequestContent(Request request,  PolicyChain policyChain) {
+    public ReadWriteStream onRequestContent(Request request, PolicyChain policyChain) {
         // Content stream must be used only if request contains Transfer-encoding header.
         if (isTransferEncoding(request)) {
             return new BufferedReadWriteStream() {
-
                 private long contentLength = 0;
 
                 @Override
@@ -112,14 +111,17 @@ public class RequestContentLimitPolicy {
 
                     if (contentLength > requestContentLimitPolicyConfiguration.getLimit()) {
                         policyChain.streamFailWith(
-                                PolicyResult.failure(
-                                        REQUEST_CONTENT_LIMIT_TOO_LARGE,
-                                        HttpStatusCode.REQUEST_ENTITY_TOO_LARGE_413,
-                                        "The request is larger than the server is willing or able to process.",
-                                        Maps.<String, Object>builder()
-                                                .put("length", contentLength)
-                                                .put("limit", requestContentLimitPolicyConfiguration.getLimit())
-                                                .build()));
+                            PolicyResult.failure(
+                                REQUEST_CONTENT_LIMIT_TOO_LARGE,
+                                HttpStatusCode.REQUEST_ENTITY_TOO_LARGE_413,
+                                "The request is larger than the server is willing or able to process.",
+                                Maps
+                                    .<String, Object>builder()
+                                    .put("length", contentLength)
+                                    .put("limit", requestContentLimitPolicyConfiguration.getLimit())
+                                    .build()
+                            )
+                        );
 
                         return this;
                     } else {

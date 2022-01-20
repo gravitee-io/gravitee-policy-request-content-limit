@@ -15,6 +15,8 @@
  */
 package io.gravitee.policy.rcl;
 
+import static org.mockito.Mockito.*;
+
 import io.gravitee.common.http.HttpHeadersValues;
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.gateway.api.Request;
@@ -31,8 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.mockito.Mockito.*;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -93,7 +93,7 @@ public class RequestContentLimitPolicyTest {
 
         policy.onRequest(request, response, policyChain);
 
-        verify(policyChain, times(  1)).doNext(request, response);
+        verify(policyChain, times(1)).doNext(request, response);
     }
 
     @Test
