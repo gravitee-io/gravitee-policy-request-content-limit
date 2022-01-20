@@ -16,11 +16,10 @@
 package io.gravitee.policy.rcl.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.net.URL;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -30,8 +29,7 @@ public class RequestContentLimitPolicyConfigurationTest {
 
     @Test
     public void shouldReadConfiguration() throws IOException {
-        RequestContentLimitPolicyConfiguration configuration =
-                load("/io/gravitee/policy/rcl/configuration1.json");
+        RequestContentLimitPolicyConfiguration configuration = load("/io/gravitee/policy/rcl/configuration1.json");
 
         Assert.assertEquals(1000, configuration.getLimit());
     }
