@@ -22,7 +22,7 @@
 
     <groupId>io.gravitee.policy</groupId>
     <artifactId>gravitee-policy-request-content-limit</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.0</version>
 
     <name>Gravitee.io APIM - Policy - Request Content Limit</name>
     <description>Description of the Request Content Limit Gravitee Policy</description>
@@ -42,6 +42,8 @@
         <json-schema-generator-maven-plugin.outputDirectory>${project.build.directory}/schemas</json-schema-generator-maven-plugin.outputDirectory>
 
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
+        <!-- Property used by the publication job in CI-->
+        <publish-folder-path>graviteeio-apim/plugins/policies</publish-folder-path>
     </properties>
 
     <dependencies>
