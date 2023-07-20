@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/gravitee-io/gravitee-policy-request-content-limit/compare/1.8.0...1.8.1) (2023-07-20)
+
+
+### Bug Fixes
+
+* update policy description ([33d5c47](https://github.com/gravitee-io/gravitee-policy-request-content-limit/commit/33d5c47cc4af26b5e836852b9e33b22e862c3468))
+
 # [1.8.0](https://github.com/gravitee-io/gravitee-policy-request-content-limit/compare/1.7.0...1.8.0) (2022-01-21)
 
 
