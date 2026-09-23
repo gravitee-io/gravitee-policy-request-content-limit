@@ -70,8 +70,7 @@ public class RequestContentLimitPolicy {
                             REQUEST_CONTENT_LIMIT_TOO_LARGE,
                             HttpStatusCode.REQUEST_ENTITY_TOO_LARGE_413,
                             "The request is larger than the server is willing or able to process.",
-                            Maps
-                                .<String, Object>builder()
+                            Maps.<String, Object>builder()
                                 .put("length", contentLength)
                                 .put("limit", requestContentLimitPolicyConfiguration.getLimit())
                                 .build()
@@ -115,8 +114,7 @@ public class RequestContentLimitPolicy {
                                 REQUEST_CONTENT_LIMIT_TOO_LARGE,
                                 HttpStatusCode.REQUEST_ENTITY_TOO_LARGE_413,
                                 "The request is larger than the server is willing or able to process.",
-                                Maps
-                                    .<String, Object>builder()
+                                Maps.<String, Object>builder()
                                     .put("length", contentLength)
                                     .put("limit", requestContentLimitPolicyConfiguration.getLimit())
                                     .build()
