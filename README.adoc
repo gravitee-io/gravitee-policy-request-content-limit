@@ -19,11 +19,13 @@ endif::[]
 You can use the `request-content-limit` policy to specify a maximum request content length allowed.
 This limit is compared to the content length header of the request.
 
-== Compatibility with APIM
+== Compatibility matrix
 
 |===
-| Plugin version | APIM version
-| 1.x            | All supported versions
+| Plugin version | APIM            | Java version
+
+| 2.x            | 4.7.x to latest | 21
+| 1.x            | 3.x to latest   | 8
 |===
 
 == Configuration
